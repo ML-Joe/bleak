@@ -239,7 +239,7 @@ class BleakClientDotNet(BaseBleakClient):
             # This keeps the device connected until we dispose the session or
             # until we set MaintainConnection = False.
             self._session.MaintainConnection = True
-            await asyncio.wait_for(event.wait(), timeout=timeout)
+            await asyncio.wait_for(event.wait(), timeout=self._timeout)
         except BaseException:
             handle_disconnect()
             raise
@@ -283,7 +283,7 @@ class BleakClientDotNet(BaseBleakClient):
             self._disconnect_events.append(event)
             try:
                 self._requester.Dispose()
-                await asyncio.wait_for(event.wait(), timeout=10)
+                await asyncio.wait_for(event.wait(), timeout=self._timeout)
             finally:
                 self._disconnect_events.remove(event)
 

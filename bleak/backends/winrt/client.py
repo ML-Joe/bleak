@@ -213,7 +213,8 @@ class BleakClientWinRT(BaseBleakClient):
             # until we set maintain_connection = False.
             self._session.maintain_connection = True
 
-            await asyncio.wait_for(event.wait(), timeout=timeout)
+
+            await asyncio.wait_for(event.wait(), timeout=self._timeout)
         except BaseException:
             handle_disconnect()
             raise
@@ -256,7 +257,7 @@ class BleakClientWinRT(BaseBleakClient):
             self._disconnect_events.append(event)
             try:
                 self._requester.close()
-                await asyncio.wait_for(event.wait(), timeout=10)
+                await asyncio.wait_for(event.wait(), timeout=self._timeout)
             finally:
                 self._disconnect_events.remove(event)
 
